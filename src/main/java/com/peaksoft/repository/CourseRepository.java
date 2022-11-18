@@ -10,5 +10,4 @@ public interface CourseRepository {
     List<Course> getAllCourse();
     void updateCourseById(Long id, Course course);
     void removeCourseById(Long id);
-
 }

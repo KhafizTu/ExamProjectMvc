@@ -8,7 +8,7 @@ public interface CompanyRepository {
     void saveCompany(Company company);
     Company getCompanyById(Long id);
     List<Company> getAllCompany();
-    void updateCompanyById(Company company);
+    void updateCompany(Company company);
     void removeCompanyById(Long id);
 
 }

@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 import static javax.persistence.CascadeType.*;
-import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor
@@ -22,12 +22,21 @@ public class Task {
     @SequenceGenerator(name = "company_gen", sequenceName = "company_seq", allocationSize = 1)
     private Long id;
 
+    @Column(length = 500, name = "task_name")
     private String taskName;
 
+    @Column(length = 500, name = "task_text")
     private String taskText;
 
+    @Column(name = "dead_line")
     private LocalDate deadLine;
 
-    @ManyToOne(cascade = {DETACH, REFRESH, MERGE}, fetch = EAGER)
+    public Task(String taskName, String taskText, LocalDate deadLine) {
+        this.taskName = taskName;
+        this.taskText = taskText;
+        this.deadLine = deadLine;
+    }
+
+    @ManyToOne(cascade = {DETACH, REFRESH, MERGE}, fetch = LAZY)
     private Lesson lesson;
 }

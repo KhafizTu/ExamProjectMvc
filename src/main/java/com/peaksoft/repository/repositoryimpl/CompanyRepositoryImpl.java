@@ -3,12 +3,11 @@ package com.peaksoft.repository.repositoryimpl;
 import com.peaksoft.entity.Company;
 import com.peaksoft.repository.CompanyRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
-
 
 @Repository
 @Transactional
@@ -28,12 +27,12 @@ public class CompanyRepositoryImpl implements CompanyRepository {
     }
 
     @Override
-    public List<Company> getAllCompany() {
+    public List getAllCompany() {
         return entityManager.createQuery("select c from Company c").getResultList();
     }
 
     @Override
-    public void updateCompanyById(Company company) {
+    public void updateCompany(Company company) {
         entityManager.merge(company);
     }
 

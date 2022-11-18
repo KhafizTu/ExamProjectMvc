@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
+
 
 @Entity
 @NoArgsConstructor
@@ -22,11 +22,18 @@ public class Company {
     @SequenceGenerator(name = "company_gen", sequenceName = "company_seq", allocationSize = 1)
     private Long id;
 
+    @Column(length = 500, name = "company_name")
     private String companyName;
 
+    @Column(length = 500, name = "located_country")
     private String locatedCountry;
 
-    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "company")
+    public Company(String companyName, String locatedCountry) {
+        this.companyName = companyName;
+        this.locatedCountry = locatedCountry;
+    }
+
+    @OneToMany(cascade = ALL, mappedBy = "company")
     private List<Course> courses;
     public void addCourse(Course course) {
         if (courses == null) courses = new ArrayList<>();

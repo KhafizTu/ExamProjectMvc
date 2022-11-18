@@ -1,22 +1,21 @@
 package com.peaksoft.service.serviceimpl;
 
 import com.peaksoft.entity.Course;
-import com.peaksoft.repository.repositoryimpl.CourseRepositoryImpl;
+import com.peaksoft.repository.CourseRepository;
 import com.peaksoft.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
-
 
 @Service
 @Transactional
 public class CourseServiceImpl implements CourseService {
-    private final CourseRepositoryImpl courseRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
-    public CourseServiceImpl(CourseRepositoryImpl courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
 

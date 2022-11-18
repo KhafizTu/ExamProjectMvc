@@ -1,25 +1,24 @@
 package com.peaksoft.service.serviceimpl;
 
 import com.peaksoft.entity.Company;
-import com.peaksoft.repository.repositoryimpl.CompanyRepositoryImpl;
+import com.peaksoft.repository.CompanyRepository;
 import com.peaksoft.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @Transactional
 public class CompanyServiceImpl implements CompanyService {
-
-    private final CompanyRepositoryImpl companyRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public CompanyServiceImpl(CompanyRepositoryImpl companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
-
 
     @Override
     public void saveCompany(Company company) {
@@ -37,8 +36,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void updateCompanyById(Company company) {
-        companyRepository.updateCompanyById(company);
+    public void updateCompany(Company company) {
+        companyRepository.updateCompany(company);
     }
 
     @Override

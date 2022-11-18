@@ -4,15 +4,15 @@ import com.peaksoft.entity.Company;
 import com.peaksoft.entity.Course;
 import com.peaksoft.repository.CourseRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 @Transactional
-public class CourseRepositoryImpl implements CourseRepository {
+public class CourseRepositoryImpl implements CourseRepository{
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -48,4 +48,5 @@ public class CourseRepositoryImpl implements CourseRepository {
     public void removeCourseById(Long id) {
         entityManager.remove(entityManager.find(Course.class, id));
     }
+
 }

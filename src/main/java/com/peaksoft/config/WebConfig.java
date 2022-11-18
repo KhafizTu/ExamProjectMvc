@@ -14,6 +14,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 @EnableWebMvc
 @ComponentScan("com.peaksoft")
 public class WebConfig {
+
     private final ApplicationContext applicationContext;
 
     public WebConfig(ApplicationContext applicationContext) {
@@ -32,7 +33,7 @@ public class WebConfig {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver srtr = new SpringResourceTemplateResolver();
         srtr.setApplicationContext(applicationContext);
-        srtr.setPrefix("/WEB-INF/views");
+        srtr.setPrefix("/WEB-INF/views/");
         srtr.setSuffix(".html");
         return srtr;
     }

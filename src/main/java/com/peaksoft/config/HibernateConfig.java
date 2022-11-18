@@ -1,6 +1,7 @@
 package com.peaksoft.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -18,10 +19,10 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@ComponentScan("com.peaksoft")
 @EnableTransactionManagement
 public class HibernateConfig {
     private final Environment env;
-
 
     public HibernateConfig(Environment env) {
         this.env = env;
@@ -30,46 +31,47 @@ public class HibernateConfig {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("database.driver_class")));
-        dataSource.setUrl(env.getProperty("database.url"));
-        dataSource.setUsername(env.getProperty("database.user"));
-        dataSource.setPassword(env.getProperty("database.pass"));
+        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("datasource.driverClassName")));
+        dataSource.setUrl(env.getProperty("datasource.url"));
+        dataSource.setUsername(env.getProperty("datasource.username"));
+        dataSource.setPassword(env.getProperty("datasource.password"));
         return dataSource;
     }
 
-    private Properties getHibernateProperties() {
+    public Properties getHibernateProperties() {
         Properties properties = new Properties();
-        properties.put(org.hibernate.cfg.Environment.SHOW_SQL, env.getProperty("database.hibernate.show_sql"));
-        properties.put(org.hibernate.cfg.Environment.DIALECT, env.getProperty("database.hibernate.dialect"));
-        properties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, env.getProperty("database.hibernate.hbm_ddl_auto"));
+        properties.put("hibernate.show_sql", "true");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.put("hibernate.hbm2ddl.auto", "update");
         return properties;
     }
 
-    @Bean("emf")
-    public EntityManagerFactory entityManagerFactory(DataSource dataSource) {
+    @Bean
+    public EntityManagerFactory entityManagerFactory(DataSource dataSource){
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         jpaVendorAdapter.setGenerateDdl(true);
         jpaVendorAdapter.setShowSql(true);
 
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+                new LocalContainerEntityManagerFactoryBean();
+
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        entityManagerFactoryBean.setPackagesToScan(env.getProperty("package.toScan"));
+        entityManagerFactoryBean.setPackagesToScan("com.peaksoft");
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
         entityManagerFactoryBean.afterPropertiesSet();
         return entityManagerFactoryBean.getObject();
     }
 
     @Bean
-    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
+    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor(){
         return new PersistenceExceptionTranslationPostProcessor();
     }
-
 }
